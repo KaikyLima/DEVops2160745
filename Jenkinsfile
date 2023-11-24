@@ -2,14 +2,42 @@ pipeline {
     agent any
     
     stages {
-        stage('Build'){
+        stage('Instalacao npm'){
             steps {
-                echo 'Building...'
+                echo 'Instalando...'
                 sh '''
-                    docker info
-                    docker compose version
-                    java --version
+                    
+                    npm install
 
+                '''
+            }
+        }
+        stage('Testes do npm'){
+            steps {
+                echo 'Testando...'
+                sh '''
+                    
+                    npm test
+
+                '''
+            }
+        }
+        stage('Building'){
+            steps {
+                echo 'Buildando...'
+                sh '''
+                    
+                    docker build
+
+                '''
+            }
+        }
+        stage('Subindo containers'){
+            steps{
+                echo 'Ativando containers...'
+                sh'''
+
+                    docker compose up
 
                 '''
             }

@@ -1,10 +1,6 @@
 pipeline {
     agent any
     
-    options {
-        cachesNodeModules()
-    }
-
     stages {
         stage('Declarative: Checkout SCM') {
             steps {
@@ -15,7 +11,7 @@ pipeline {
         stage('Instalacao npm') {
             steps {
                 echo 'Instalando...'
-                sh 'rm -rf node_modules'
+                sh 'rm -rf node_modules || true'  
                 sh 'npm install'
             }
         }

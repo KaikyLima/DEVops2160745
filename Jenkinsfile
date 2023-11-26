@@ -11,9 +11,9 @@ pipeline {
         stage('Instalacao npm') {
             steps {
                 echo 'Instalando...'
-                sh 'rm -rf node_modules || true'  
-                sh 'npm install'
-            }
+                sh 'npm ci'
+            }   
         }
+
     }
 }

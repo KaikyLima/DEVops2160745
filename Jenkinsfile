@@ -1,19 +1,39 @@
-pipeline {
     agent any
-    
-    stages {
-        stage('Declarative: Checkout SCM') {
-            steps {
-                checkout scm
-            }
-        }
 
-        stage('Instalacao npm') {
+    stages {
+        stage('Instalacao npm'){
             steps {
                 echo 'Instalando...'
-                sh 'npm ci'
-            }   
+                sh '''
+                    
+                    npm install
+                '''
+            }
         }
-
+        stage('Testes do npm'){
+            steps {
+                echo 'Testando...'
+                sh '''
+                    
+                    npm test
+                '''
+            }
+        }
+        stage('Building'){
+            steps {
+                echo 'Buildando...'
+                sh '''
+                    
+                    docker build
+                '''
+            }
+        }
+        stage('Subindo containers'){
+            steps{
+                echo 'Ativando containers...'
+                sh'''
+                    docker compose up
+                '''
+            }
+        }
     }
-}

@@ -1,12 +1,10 @@
-    agent any
-
-    stages {
-        stage('Instalacao npm'){
+  stage('Build'){
             steps {
-                echo 'Instalando...'
+                echo 'Building...'
                 sh '''
-                    
-                    npm install
+                    docker info
+                    docker compose version
+                    java --version
                 '''
             }
         }

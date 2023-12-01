@@ -1,52 +1,42 @@
 pipeline {
     agent any
-
+    
     stages {
-        stage('Checkout') {
+        stage('Instalacao npm'){
             steps {
-                echo 'Checking out code...'
-                checkout scm
+                echo 'Instalando...'
+                sh '''
+                    
+                    npm install
+                '''
+            }
+        }
+        stage('Testes do npm'){
+            steps {
+                echo 'Testando...'
+                sh '''
+                    
+                    npm test
+                '''
+            }
+        }
+        stage('Building'){
+            steps {
+                echo 'Buildando...'
+                sh '''
+                    
+                    docker build
+                '''
+            }
+        }
+        stage('Subindo containers'){
+            steps{
+                echo 'Ativando containers...'
+                sh'''
+                    docker compose up
+                '''
             }
         }
 
-        stage('Build') {
-            steps {
-                echo 'Building...'
-                script {
-                    try {
-                        docker.withServer('your-docker-server') {
-                            docker.image('your-docker-image').pull()
-                            docker.image('your-docker-image').run('--rm -v $PWD:/app -w /app your-build-command')
-                        }
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Failed to build: ${e.message}"
-                    }
-                }
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-                script {
-                    try {
-                        sh 'your-test-command'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Tests failed: ${e.message}"
-                    }
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline succeeded! Send notifications, generate reports, etc.'
-        }
-        failure {
-            echo 'Pipeline failed! Send notifications, generate reports, etc.'
-        }
     }
 }
